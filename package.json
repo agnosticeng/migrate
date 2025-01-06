@@ -1,0 +1,35 @@
+{
+  "name": "@agnosticeng/migrate",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agnosticeng/migrate.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && tsc",
+    "preview": "vite preview",
+    "test:browser": "vitest"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@vitest/browser": "^2.1.8",
+    "jsdom": "^25.0.1",
+    "typescript": "~5.6.2",
+    "vite": "^6.0.3",
+    "vitest": "^2.1.8",
+    "webdriverio": "^9.5.1"
+  },
+  "main": "./dist/migrate.umd.cjs",
+  "types": "./dist/migrate.d.ts",
+  "module": "./dist/migrate.js",
+  "exports": {
+    ".": {
+      "import": "./dist/migrate.js",
+      "require": "./dist/migrate.cjs"
+    }
+  }
+}
