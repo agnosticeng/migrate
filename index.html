@@ -1,13 +1,36 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite + TS</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="module">
+    import { MigrationManager } from './src/migrate.ts';
+
+    const migrationManager = new MigrationManager({
+      exec: async (query, params) => {
+        console.log(query, params);
+        return [{ hash: 'a9b51dc76b96ac5b6b027074ca183f85f8b3252af4593d9d605f7b9d4e60ceff' }]
+      }
+    });
+
+    migrationManager.migrate([{
+      name: 'create_users_table',
+      script: `CREATE TABLE users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  password TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);`,
+    }]).catch(console.error);
+  </script>
+</body>
+
 </html>

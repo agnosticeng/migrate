@@ -1,3 +1,5 @@
+import MIGRATIONS_TABLE from './migrations_table.sql?raw';
+
 interface IDatabase {
 	exec: (query: string, params?: any[]) => Promise<any[]>;
 }
@@ -8,7 +10,6 @@ export interface Migration {
 }
 
 export class MigrationManager {
-	private readonly table_name = 'migrations';
 	constructor(private database: IDatabase) { }
 
 	async migrate(migrations: Migration[]) {
@@ -27,14 +28,7 @@ export class MigrationManager {
 	}
 
 	private async init() {
-		await this.database.exec(`CREATE TABLE IF NOT EXISTS ${this.table_name} (
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	name TEXT NOT NULL,
-	hash TEXT NOT NULL,
-	created_at TEXT NOT NULL DEFAULT (datetime('now'))
-);
-
-CREATE INDEX IF NOT EXISTS idx_migrations_name ON ${this.table_name} (name);`);
+		await this.database.exec(MIGRATIONS_TABLE);
 	}
 
 	private async migrateOne(migration: Migration) {
